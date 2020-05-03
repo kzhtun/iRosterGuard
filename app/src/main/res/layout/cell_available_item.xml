@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/rounded_layout"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/site_name"
+        style="@style/cell_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Central Pool Listing Permanent Officers"
+        android:textAllCaps="true"
+        android:textColor="@color/dark_blue"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+           
+            android:text="SN."
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/orange"
+            android:paddingLeft="6dp"
+            android:gravity="center_vertical"
+            android:text="COURSE"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NAME"
+            android:paddingLeft="6dp"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp"
+            android:text="PWN\nGRADE"
+            android:textColor="@color/white"
+            android:textSize="7sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="EMP\nGRADE"
+            android:textColor="@color/white"
+            android:textSize="7sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+
+            android:text="CONTACT"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="1."
+            android:textColor="@color/oil"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp"
+            android:text="RTT.OBS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="John Jordan"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+
+            android:text="92871822"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+    </LinearLayout>
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="1."
+            android:textColor="@color/oil"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp"
+            android:text="RTT.OBS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="John Jordan"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+
+            android:text="92871822"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+    </LinearLayout>
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="1."
+            android:textColor="@color/oil"
+            android:textSize="9sp" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp"
+            android:text="RTT.OBS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="John Jordan"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:text="SSS"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+        <TextView
+            style="@style/cell_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+
+            android:text="92871822"
+            android:textSize="9sp"
+            android:textColor="@color/oil" />
+
+    </LinearLayout>
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light"/>
+
+</LinearLayout>
