@@ -1,0 +1,2 @@
+rootProject.name='iRoster'
+include ':app'
