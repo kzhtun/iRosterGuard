@@ -207,8 +207,6 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:background="@drawable/rounded_button_green"
-                android:paddingLeft="32dp"
-                android:paddingRight="16dp"
                 android:text="UPDATE"
                 android:layout_weight="1"
                 android:textColor="@color/white" />
@@ -220,8 +218,6 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="3dp"
                 android:background="@drawable/rounded_button_red"
-                android:paddingLeft="32dp"
-                android:paddingRight="16dp"
                 android:layout_weight="1"
                 android:text="CLOSE"
                 android:textColor="@color/white" />

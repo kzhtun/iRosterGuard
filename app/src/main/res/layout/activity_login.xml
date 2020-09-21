@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".activities.LoginActivity">
+    tools:context="com.info121.iguard.activities.LoginActivity">
 
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -54,54 +54,56 @@
                     android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
                     android:gravity="left"
                     android:letterSpacing="0.1"
                     android:text="MONDAY, 30 DEC 2019"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:textSize="13sp"
+                />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18sp"
+                    android:layout_marginRight="21sp"
                     android:layout_marginBottom="30dp"
                     android:gravity="right"
                     android:letterSpacing="0.1"
                     android:text="12:00 PM"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="13sp"
+                    />
 
             </LinearLayout>
         </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="-30dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="-25dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_layout"
         android:orientation="vertical"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="32dp"
+        android:paddingBottom="32dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:text="User Name"
+            android:layout_marginBottom="3dp"
             android:textAllCaps="true"
+            android:textSize="13sp"
             android:textColor="@color/cell_label" />
 
         <FrameLayout
@@ -115,6 +117,7 @@
                 android:layout_height="32dp"
                 android:background="@drawable/rounded_edittext"
                 android:paddingLeft="10dp"
+                android:text = "HASAN"
                 android:textColor="@color/edit_text_color" />
 
             <ProgressBar
@@ -132,6 +135,8 @@
             android:layout_marginLeft="3dp"
             android:layout_marginTop="16dp"
             android:text="Password"
+            android:textSize="13sp"
+            android:layout_marginBottom="3dp"
             android:textAllCaps="true"
             android:textColor="@color/cell_label" />
 
@@ -157,16 +162,18 @@
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:letterSpacing="0.2"
+        fontPath="fonts/Lato-Bold.ttf"
         android:background="@drawable/rounded_button_default"
-        android:letterSpacing="0.1"
         android:text="LOGIN"
         android:textColor="@color/white" />
 
@@ -178,4 +185,16 @@
         android:clickable="true"
         android:text="Forgot your password?"
         android:textColor="@color/cell_label" />
+
+    <TextView android:id="@+id/ver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="right|bottom"
+        android:clickable="true"
+        android:text="Ver:"
+        android:textColor="@color/colorPrimary" />
 </LinearLayout>

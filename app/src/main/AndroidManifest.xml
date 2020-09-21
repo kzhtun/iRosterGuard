@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.info121.iroster">
+    package="com.info121.iguard">
+
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <meta-data
+        android:name="android.nfc.action.TECH_DISCOVERED"
+        android:resource="@xml/nfc_tech_filter" />
 
     <application
-        android:name=".App"
+        android:name="com.info121.iguard.App"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,16 +20,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.JobDetailActivity"></activity>
-        <activity android:name=".activities.JobListActivity"></activity>
-        <activity android:name=".activities.ProfileActivity" />
-        <activity android:name=".activities.ForgotPasswordActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.MainActivity">
+
+        <activity android:name="com.info121.iguard.activities.CalendarActivity"/>
+        <activity android:name="com.info121.iguard.activities.NotificationActivity" />
+        <activity android:name="com.info121.iguard.activities.JobDetailActivity" />
+        <activity android:name="com.info121.iguard.activities.JobListActivity" />
+        <activity android:name="com.info121.iguard.activities.JobListBySiteActivity" />
+        <activity android:name="com.info121.iguard.activities.ForgotPasswordActivity" />
+        <activity android:name="com.info121.iguard.activities.MainActivity" />
+        <activity android:name="com.info121.iguard.activities.ProfileActivity"/>
+
+        <activity android:name="com.info121.iguard.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
+<!--                <action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <data android:mimeType="text/plain" />-->
             </intent-filter>
         </activity>
     </application>

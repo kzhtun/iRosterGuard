@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0B695C</color>
-    <color name="colorPrimaryDark">#07463E</color>
-    <color name="colorAccent">#FFE500</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#FF9800</color>
 
     <color name="toolbar_back">#F5A01A</color>
 
@@ -27,8 +27,8 @@
     <color name="white">#FFFFFF</color>
 
 
-    <color name="accept">#5EA24A</color>
-    <color name="reject">#F8695C</color>
+    <color name="accept">#2e7d32</color>
+    <color name="reject">#d84315</color>
 
     <color name="layout_green">#0DAA00</color>
     <color name="layout_green_stroke">#10C701</color>
@@ -55,12 +55,10 @@
     <color name="edit_text_color">#262A33</color>
     <color name="edit_text_background">#EFEFEF</color>
 
-
     <color name="background">#C3DBE3</color>
 
-
-    <color name="default_button">#07463E</color>
-    <color name="default_button_stroke">#0B695C</color>
+    <color name="default_button">#0288D1</color>
+    <color name="default_button_stroke">#0288D1</color>
 
     <color name="normal_button">#004881</color>
     <color name="normal_button_stroke">#004881</color>
@@ -69,8 +67,8 @@
 
     <color name="title_text">#111111</color>
     <color name="cell_text_light">#8BA1AF</color>
-    <color name="cell_text">#3F3F3F</color>
-    <color name="cell_label">#0B695C</color>
+    <color name="cell_text">#006DA9</color>
+    <color name="cell_label">#878787</color>
     <color name="cell_label_dark">#292929</color>
 
     <color name="switchTrack">#ffd600</color>

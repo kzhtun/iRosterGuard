@@ -41,8 +41,6 @@
             android:layout_marginRight="3dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button_green"
-            android:paddingLeft="32dp"
-            android:paddingRight="16dp"
             android:text="UPDATE"
             android:textColor="@color/white" />
 
@@ -54,8 +52,6 @@
             android:layout_marginLeft="3dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button_red"
-            android:paddingLeft="32dp"
-            android:paddingRight="16dp"
             android:text="CLOSE"
             android:textColor="@color/white" />
     </LinearLayout>

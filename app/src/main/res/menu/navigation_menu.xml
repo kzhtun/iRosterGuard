@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:id="@+id/group_1" android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/job_list"
+            android:checked="false"
+            android:icon="@mipmap/m_job_list"
+            android:title="This Week Jobs" />
+
+        <item
+            android:id="@+id/notificaiton"
+            android:checked="false"
+            android:icon="@mipmap/m_noti"
+            android:title="Notification" />
 
         <item
             android:id="@+id/profile"
             android:checked="false"
-            android:icon="@mipmap/ic_profile1"
+            android:icon="@mipmap/m_profile"
             android:title="Profile" />
+
         <item
-            android:id="@+id/open_close"
+            android:id="@+id/logout"
             android:checked="false"
-            android:icon="@mipmap/ic_open_close"
-            android:title="Store Opening/ Closing" />
-
-
+            android:icon="@mipmap/m_logout"
+            android:title="Logout" />
 
     </group>
 

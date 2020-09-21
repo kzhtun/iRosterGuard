@@ -23,11 +23,11 @@
         android:gravity="center_vertical|left"
         android:paddingLeft="18dp"
         android:background="@color/colorPrimary"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/white"
         android:letterSpacing="0.1"
         android:text="There are 8 shortages for this day."/>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,6 +43,6 @@
             android:paddingTop="50dp"
             android:paddingBottom="16dp" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

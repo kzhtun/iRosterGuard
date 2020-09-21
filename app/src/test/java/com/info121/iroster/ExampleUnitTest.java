@@ -1,4 +1,4 @@
-package com.info121.iroster;
+package com.info121.iguard;
 
 import org.junit.Test;
 
