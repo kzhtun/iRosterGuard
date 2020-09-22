@@ -1,7 +1,6 @@
 package com.info121.iguard.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,14 +18,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.info121.iguard.AbstractActivity;
 import com.info121.iguard.App;
 import com.info121.iguard.R;
-import com.info121.iguard.adapters.JobListAdapter;
+import com.info121.iguard.adapters.JobDetailListAdapter;
 import com.info121.iguard.adapters.JobListBySiteAdapter;
 import com.info121.iguard.api.RestClient;
 import com.info121.iguard.models.JobDetail;
 import com.info121.iguard.models.ObjectRes;
+import com.info121.iguard.models.SiteDetail;
 import com.info121.iguard.utils.Util;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,11 +41,11 @@ import retrofit2.Response;
 public class JobListBySiteActivity extends AbstractActivity {
     Context mContext = JobListBySiteActivity.this;
 
-    List<JobDetail> mJobListBySite = new ArrayList<>();
+    List<SiteDetail> mSiteList = new ArrayList<>();
     List<JobDetail> mJobList = new ArrayList<>();
 
     JobListBySiteAdapter jobListBySiteAdapter;
-    JobListAdapter jobListAdapter;
+    JobDetailListAdapter jobDetailListAdapter;
 
     @BindView(R.id.no_data)
     TextView mNoData;
@@ -58,6 +56,9 @@ public class JobListBySiteActivity extends AbstractActivity {
     @BindView(R.id.pullToRefresh)
     SwipeRefreshLayout mSwipeLayout;
 
+    @BindView(R.id.title)
+    TextView mTitle;
+
     @BindView(R.id.sub_title)
     TextView mSubtile;
 
@@ -67,6 +68,10 @@ public class JobListBySiteActivity extends AbstractActivity {
     @BindView(R.id.view_switch)
     ImageView mViewSwitch;
 
+    String sDateString, eDateString;
+    Date sDate,eDate;
+
+    Boolean isGroup = true;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,9 +87,45 @@ public class JobListBySiteActivity extends AbstractActivity {
 
 
     @OnClick(R.id.back)
-    public void backOnClick(){
+    public void backOnClick() {
         finish();
     }
+
+
+    @OnClick(R.id.prev)
+    public void prevOnClick(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
+
+        cal.add(Calendar.DATE, -7);
+
+        loadPrevNextWeekJobs(cal);
+    }
+
+    @OnClick(R.id.next)
+    public void nextOnClick(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
+
+        cal.add(Calendar.DATE, 7);
+
+        loadPrevNextWeekJobs(cal);
+    }
+
+    private void loadPrevNextWeekJobs(Calendar cal){
+        sDateString = Util.getStartDateOfWeek(cal.getTime());
+        eDateString = Util.getEndDateOfWeek(cal.getTime());
+
+        sDate = Util.convertDateStringToDate(sDateString, "MM-dd-yyyy");
+        eDate = Util.convertDateStringToDate(eDateString, "MM-dd-yyyy");
+
+        mSwipeLayout.setRefreshing(true);
+        getGuardJobs();
+
+        Log.e("sDate : ", sDateString);
+        Log.e("eDate : ", eDateString);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,109 +133,83 @@ public class JobListBySiteActivity extends AbstractActivity {
         setContentView(R.layout.activity_job_list_by_site);
 
         ButterKnife.bind(this);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                sDateString = extras.getString("sDate");
+                eDateString = extras.getString("eDate");
+            }
+        } else {
+            sDateString = (String) savedInstanceState.getSerializable("sDate");
+            eDateString = (String) savedInstanceState.getSerializable("eDate");
+        }
+
+        sDate = Util.convertDateStringToDate(sDateString, "MM-dd-yyyy");
+        eDate = Util.convertDateStringToDate(eDateString, "MM-dd-yyyy");
+
         // set toolbar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        final String sector = getIntent().getExtras().getString("DATE");
-
-        //     mSubtile.setText(sector);
-
-        //TODO: dummy data
-        mJobListBySite = new ArrayList<>();
-        mJobListBySite.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "", "PND", "MOHD RAFER BIN"));
-        mJobListBySite.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Serinor Office", "", "CFM", "MOHD RAFER BIN"));
-        mJobListBySite.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Serinor Office", "", "PND", "MOHD RAFER BIN"));
-
-
-        mJobList = new ArrayList<>();
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "25-May-2020, Mon", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "26-May-2020, Tue", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "27-May-2020, Wed", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "28-May-2020, Thu", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "29-May-2020, Fri", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "30-May-2020, Sat", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "6 Battery Rd, Singapore 049909", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "31-May-2020, Sun", "PENDING", "MOHD RAFER BIN"));
-
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "S0", "Security Office", "25-May-2020, Mon", "CONFIRMED", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "26-May-2020, Tue", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "27-May-2020, Wed", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "28-May-2020, Thu", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "29-May-2020, Fri", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "30-May-2020, Sat", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #04100", "WATERWAY POINT, WWP", "83 Punggol Central, Singapore 828761", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "31-May-2020, Sun", "PENDING", "MOHD RAFER BIN"));
-
-
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "25-May-2020, Mon", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "26-May-2020, Tue", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "27-May-2020, Wed", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "28-May-2020, Thu", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "29-May-2020, Fri", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "30-May-2020, Sat", "PENDING", "MOHD RAFER BIN"));
-        mJobList.add(new JobDetail("CONTRACT #30933", "THE WATERBAY, TWB", "45 Edgefield Plains, Singapore 828710", "SHIFT 1", "(08:00~20:00)", "SO", "Security Office", "31-May-2020, Sun", "PENDING", "MOHD RAFER BIN"));
-
 
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        jobListBySiteAdapter = new JobListBySiteAdapter(mContext, mJobListBySite);
-        jobListAdapter = new JobListAdapter(mContext, mJobList);
 
+        jobListBySiteAdapter = new JobListBySiteAdapter(mContext, mSiteList);
+        jobDetailListAdapter = new JobDetailListAdapter(mContext, mJobList);
 
         mRecyclerView.setAdapter(jobListBySiteAdapter);
 
+        // data loading
+        mSwipeLayout.setRefreshing(true);
+        getGuardJobs();
 
-        mViewSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-//                String selectedDate = sdf.format(new Date(Calendar.getInstance().getTimeInMillis()));
-//
-//                Intent intent = new Intent(JobListBySiteActivity.this, JobListActivity.class);
-//                intent.putExtra("DATE", selectedDate);
-//
-//                startActivity(intent);
-//                finish();
+        mSwipeLayout.setOnRefreshListener(() -> {
+            mSwipeLayout.setRefreshing(true);
+            getGuardJobs();
+        });
 
 
 
+        mTitle.setText("JOB LIST BY WEEK");
+        mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
 
-                if (mRecyclerView.getAdapter() instanceof JobListAdapter) {
-                    mRecyclerView.setAdapter(jobListBySiteAdapter);
+        mViewSwitch.setOnClickListener(view -> {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_list, getApplicationContext().getTheme()));
-                    } else {
-                        mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_list));
-                    }
-
+            if (isGroup) {
+                isGroup = false;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_group, getApplicationContext().getTheme()));
                 } else {
-                    mRecyclerView.setAdapter(jobListAdapter);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_group, getApplicationContext().getTheme()));
-                    } else {
-                        mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_group));
-                    }
+                    mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_group));
                 }
-                mRecyclerView.getAdapter().notifyDataSetChanged();
+
+                mTitle.setText("JOB LIST BY WEEK");
+                mRecyclerView.setAdapter(jobDetailListAdapter);
+
+            } else {
+                isGroup = true;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_list, getApplicationContext().getTheme()));
+                } else {
+                    mViewSwitch.setImageDrawable(getResources().getDrawable(R.mipmap.ic_list));
+                }
+
+                mTitle.setText("JOB LIST BY SITE");
+                mRecyclerView.setAdapter(jobListBySiteAdapter);
             }
         });
 
-        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mSwipeLayout.setRefreshing(false);
-            }
-        });
     }
 
 
+    private void getGuardJobs() {
 
-    private void getGuardJobs(){
+        mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
+
         Call<ObjectRes> call = RestClient.METRO().getApiService().GetGuardJobs(
-                "09-14-2020",
-                "09-20-2020",
+                sDateString,
+                eDateString,
                 App.GuardID,
                 Util.getSpecialKey(),
                 Util.getMobileKey(mContext)
@@ -206,18 +221,48 @@ public class JobListBySiteActivity extends AbstractActivity {
             public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
                 Log.e("Get guard jobs : ", "Success");
 
+                mSwipeLayout.setRefreshing(false);
+                mSiteList = new ArrayList<>();
+                mJobList = new ArrayList<>();
+
+                if (response.body().getResponsemessage().equalsIgnoreCase("Success")) {
+
+                    mSiteList = response.body().getSiteDetails();
+
+                    // site list
+                    jobListBySiteAdapter.update(mSiteList);
 
 
+                    for (SiteDetail s : mSiteList) {
+                        mJobList.addAll(s.getJobDetails());
+                    }
+
+                    // job detail list
+                    jobDetailListAdapter.update(mJobList);
+
+                    if(mSiteList.size() > 0){
+                        mNoData.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }else{
+                        mNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    }
+
+
+                }else{
+                    mNoData.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onFailure(Call<ObjectRes> call, Throwable t) {
+                mSwipeLayout.setRefreshing(false);
                 Log.e("Get guard jobs : ", "Failed");
             }
         });
 
     }
-
 
 
 }

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.info121.iguard.R;
-import com.info121.iguard.adapters.JobListAdapter;
 import com.info121.iguard.models.JobDetail;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import butterknife.ButterKnife;
 public class AvailableFragment extends Fragment {
     List<JobDetail> mJobList = new ArrayList<>();
 
-    JobListAdapter jobListAdapter;
+  //  JobListAdapter jobListAdapter;
 
     Context mContext = getActivity();
     String mCurrentTab = "";
@@ -78,16 +77,16 @@ public class AvailableFragment extends Fragment {
 //        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR (TNR)", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
 //        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR (TNR)", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
 
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
-        mJobList.add(new JobDetail("CONTRACT #01010", "WATERWAY POINT, WWP", "SHIFT 1 (08:00~20:00)", "SSO", "CONFIRM", "OFFICER: MOHD RAFER BIN JAMAT"));
-        mJobList.add(new JobDetail("CONTRACT #02190", "THE WATER BAY, TWB", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
-        mJobList.add(new JobDetail("CONTRACT #01010", "HASAN  ABDULLA  ALSERARI", "SHIFT 1 (08:00~20:00)", "SSO", "CONFIRM", "OFFICER: MOHD RAFER BIN JAMAT"));
-
-
-        mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        jobListAdapter = new JobListAdapter(mContext, mJobList);
-        mRecyclerView.setAdapter(jobListAdapter);
+//        mJobList.add(new JobDetail("CONTRACT #02190", "THE NORTH STAR, TNR", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
+//        mJobList.add(new JobDetail("CONTRACT #01010", "WATERWAY POINT, WWP", "SHIFT 1 (08:00~20:00)", "SSO", "CONFIRM", "OFFICER: MOHD RAFER BIN JAMAT"));
+//        mJobList.add(new JobDetail("CONTRACT #02190", "THE WATER BAY, TWB", "SHIFT 1 (08:00~20:00)", "SSO", "PENDING", "OFFICER: MOHD RAFER BIN JAMAT"));
+//        mJobList.add(new JobDetail("CONTRACT #01010", "HASAN  ABDULLA  ALSERARI", "SHIFT 1 (08:00~20:00)", "SSO", "CONFIRM", "OFFICER: MOHD RAFER BIN JAMAT"));
+//
+//
+//        mRecyclerView.setHasFixedSize(false);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+//        jobListAdapter = new JobListAdapter(mContext, mJobList);
+//        mRecyclerView.setAdapter(jobListAdapter);
 
 //        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 //            @Override

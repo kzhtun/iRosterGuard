@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.info121.iguard.App;
 import com.info121.iguard.R;
 
@@ -107,11 +108,14 @@ public class LoginActivity extends AppCompatActivity {
         initializeNFC();
 
 
-        Log.e( "CODE : ",  Util.getSpecialKey() + "," +
+        Log.e("CODE : ", Util.getSpecialKey() + "," +
                 Util.getMobileKey(mContext));
 
         mUserName.setText("zTEST001");
         mPassword.setText("p@ssw0rd");
+
+
+
 
     }
 
@@ -129,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         App.LastLogin = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE, dd MMM yyyy, hh:mm a");
 
 
-        if(mPassword.getText().toString().length() == 0) {
+        if (mPassword.getText().toString().length() == 0) {
             mPassword.setError("Password can not left blank.");
             mPassword.setFocusable(true);
             mPassword.requestFocus();
@@ -140,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void callValidateUser(){
+    public void callValidateUser() {
         Call<ObjectRes> call = RestClient.METRO().getApiService().ValidateUser(
                 mUserName.getText().toString().trim(),
                 mPassword.getText().toString().trim(),
@@ -245,13 +249,10 @@ public class LoginActivity extends AppCompatActivity {
             myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
             final Handler timer = new Handler(getMainLooper());
-            timer.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loginOnClick();
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
+            timer.postDelayed(() -> {
+                loginOnClick();
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
                 }
             }, 500);
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "23356734599",
+    "firebase_url": "https://irosterguard.firebaseio.com",
+    "project_id": "irosterguard",
+    "storage_bucket": "irosterguard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23356734599:android:227a5ebf59d0e870f98c22",
+        "android_client_info": {
+          "package_name": "com.info121.iguard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23356734599-bghg3kmgf6vpdm8goingufd77s8tfmo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCesqqE97PMkbE1R5ZxKtEXpKj98vS3rvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23356734599-bghg3kmgf6vpdm8goingufd77s8tfmo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

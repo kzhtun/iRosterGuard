@@ -46,11 +46,11 @@
 
                             <ImageView
                                 android:id="@+id/back"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/ic_back" />
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@mipmap/ic_home" />
 
-                            <TextView
+                            <TextView android:id="@+id/title"
                                 style="@style/title_text"
                                 fontPath="fonts/Lato-Bold.ttf"
                                 android:layout_width="match_parent"
@@ -100,6 +100,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
+                            android:id="@+id/prev"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -130,6 +131,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
                             android:gravity="center_vertical"
+                            android:id="@+id/next"
                             android:orientation="horizontal">
 
                             <TextView
@@ -178,7 +180,6 @@
                 android:textColor="@color/colorAccent"
                 android:visibility="gone" />
 
-
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/pullToRefresh"
                 android:layout_width="match_parent"
@@ -194,6 +195,8 @@
                     android:paddingBottom="16dp" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
         </FrameLayout>
 

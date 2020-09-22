@@ -25,6 +25,7 @@ public interface APIService {
     Call<ObjectRes> UpdatePassword(@Path("guardId") String guardId, @Path("password") String password, @Path("secretkey") String secretkey, @Path("mobileKey") String mobileKey);
 
     //getGuardJobs/09-14-2020,09-20-2020,zTEST001,info12121092020,abajibjbjaa
+    @GET("getGuardJobs/{sDate},{eDate},{guardId},{secretkey},{mobileKey}")
     Call<ObjectRes> GetGuardJobs( @Path("sDate") String sDate, @Path("eDate") String eDate, @Path("guardId") String guardId, @Path("secretkey") String secretkey, @Path("mobileKey") String mobileKey);
 
 }

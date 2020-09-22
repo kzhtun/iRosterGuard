@@ -1,110 +1,89 @@
 package com.info121.iguard.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class JobDetail {
-    String id;
-    String siteName;
-    String address;
-    String shift;
-    String shiftDesc;
-    String post;
-    String postDesc;
-    String date;
-    String status;
-    String officer;
+    @SerializedName("GuardGrade")
+    @Expose
+    private String guardGrade;
+    @SerializedName("GuardGradeDesc")
+    @Expose
+    private String guardGradeDesc;
+    @SerializedName("JobCode")
+    @Expose
+    private String jobCode;
+    @SerializedName("SiteShift")
+    @Expose
+    private String siteShift;
+    @SerializedName("address")
+    @Expose
+    private String address;
+    @SerializedName("attendancecode")
+    @Expose
+    private String attendancecode;
+    @SerializedName("attendancename")
+    @Expose
+    private String attendancename;
+    @SerializedName("cluster")
+    @Expose
+    private String cluster;
+    @SerializedName("endtime")
+    @Expose
+    private String endtime;
+    @SerializedName("globalshift")
+    @Expose
+    private String globalshift;
+    @SerializedName("jobdate")
+    @Expose
+    private String jobdate;
+    @SerializedName("jobno")
+    @Expose
+    private String jobno;
+    @SerializedName("sitecode")
+    @Expose
+    private String sitecode;
+    @SerializedName("sitename")
+    @Expose
+    private String sitename;
+    @SerializedName("starttime")
+    @Expose
+    private String starttime;
+    @SerializedName("status")
+    @Expose
+    private String status;
 
 
-    public JobDetail(String id, String siteName, String address,String shift, String shiftDesc, String post, String postDesc, String date, String status, String officer) {
-        this.id = id;
-        this.siteName = siteName;
-        this.address = address;
-        this.shift = shift;
-        this.shiftDesc = shiftDesc;
-        this.post = post;
-        this.postDesc = postDesc;
-        this.date = date;
-        this.status = status;
-        this.officer = officer;
+    public String getGuardGrade() {
+        return guardGrade;
     }
 
-    public JobDetail(String id, String siteName, String shift, String post, String status, String officer) {
-        this.id = id;
-        this.siteName = siteName;
-        this.shift = shift;
-        this.post = post;
-        this.status = status;
-        this.officer = officer;
+    public void setGuardGrade(String guardGrade) {
+        this.guardGrade = guardGrade;
     }
 
-    public String getId() {
-        return id;
+    public String getGuardGradeDesc() {
+        return guardGradeDesc;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setGuardGradeDesc(String guardGradeDesc) {
+        this.guardGradeDesc = guardGradeDesc;
     }
 
-    public String getSiteName() {
-        return siteName;
+    public String getJobCode() {
+        return jobCode;
     }
 
-    public void setSiteName(String siteName) {
-        this.siteName = siteName;
+    public void setJobCode(String jobCode) {
+        this.jobCode = jobCode;
     }
 
-    public String getShift() {
-        return shift;
+    public String getSiteShift() {
+        return siteShift;
     }
 
-    public void setShift(String shift) {
-        this.shift = shift;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public void setPost(String post) {
-        this.post = post;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getOfficer() {
-        return officer;
-    }
-
-    public void setOfficer(String officer) {
-        this.officer = officer;
-    }
-
-    public String getShiftDesc() {
-        return shiftDesc;
-    }
-
-    public void setShiftDesc(String shiftDesc) {
-        this.shiftDesc = shiftDesc;
-    }
-
-    public String getPostDesc() {
-        return postDesc;
-    }
-
-    public void setPostDesc(String postDesc) {
-        this.postDesc = postDesc;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setSiteShift(String siteShift) {
+        this.siteShift = siteShift;
     }
 
     public String getAddress() {
@@ -113,5 +92,93 @@ public class JobDetail {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAttendancecode() {
+        return attendancecode;
+    }
+
+    public void setAttendancecode(String attendancecode) {
+        this.attendancecode = attendancecode;
+    }
+
+    public String getAttendancename() {
+        return attendancename;
+    }
+
+    public void setAttendancename(String attendancename) {
+        this.attendancename = attendancename;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(String cluster) {
+        this.cluster = cluster;
+    }
+
+    public String getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(String endtime) {
+        this.endtime = endtime;
+    }
+
+    public String getGlobalshift() {
+        return globalshift;
+    }
+
+    public void setGlobalshift(String globalshift) {
+        this.globalshift = globalshift;
+    }
+
+    public String getJobdate() {
+        return jobdate;
+    }
+
+    public void setJobdate(String jobdate) {
+        this.jobdate = jobdate;
+    }
+
+    public String getJobno() {
+        return jobno;
+    }
+
+    public void setJobno(String jobno) {
+        this.jobno = jobno;
+    }
+
+    public String getSitecode() {
+        return sitecode;
+    }
+
+    public void setSitecode(String sitecode) {
+        this.sitecode = sitecode;
+    }
+
+    public String getSitename() {
+        return sitename;
+    }
+
+    public void setSitename(String sitename) {
+        this.sitename = sitename;
+    }
+
+    public String getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

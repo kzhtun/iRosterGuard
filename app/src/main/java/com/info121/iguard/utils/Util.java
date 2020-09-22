@@ -12,8 +12,8 @@ import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.Toast;
-
 
 
 import androidx.annotation.NonNull;
@@ -124,7 +124,37 @@ public class Util {
             return " ";
     }
 
-    public static String getSpecialKey(){
+
+    public static String getStartDateOfWeek(Date selectedDate) {
+
+        // get today and clear time of day
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(selectedDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
+
+        // get start of this week in milliseconds
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DATE, 1);
+
+        return convertDateToString(cal.getTime(), "MM-dd-yyyy");
+
+    }
+
+
+    public static String getEndDateOfWeek(Date selectedDate) {
+
+        // get today and clear time of day
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(selectedDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
+
+        // get start of this week in milliseconds
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DATE, 7);
+
+        return convertDateToString(cal.getTime(), "MM-dd-yyyy");
+
+    }
+
+    public static String getSpecialKey() {
         String todayDate;
         Calendar c;
         SimpleDateFormat df, dfKey;
@@ -189,7 +219,7 @@ public class Util {
 
 
     public static String stringToBinary(String string) {
-     //   byte[] decode = Base64.decodeBase64(string);
+        //   byte[] decode = Base64.decodeBase64(string);
         byte[] decode = Base64.decode(string, Base64.DEFAULT);
         return new BigInteger(1, decode).toString(2);
     }
@@ -629,8 +659,6 @@ public class Util {
 
         return ret;
     }
-
-
 
 
 }

@@ -17,6 +17,10 @@ public class ObjectRes {
 	@Expose
 	private List<ProfileDetails> profileDetails;
 
+	@SerializedName("SiteDetails")
+	@Expose
+	private List<SiteDetail> siteDetails = null;
+
 	@SerializedName("Version")
 	@Expose
 	private String version;
@@ -33,7 +37,13 @@ public class ObjectRes {
 	@Expose
 	private String token;
 
+	public List<SiteDetail> getSiteDetails() {
+		return siteDetails;
+	}
 
+	public void setSiteDetails(List<SiteDetail> siteDetails) {
+		this.siteDetails = siteDetails;
+	}
 
 	public List<ProfileDetails> getProfileDetails() {
 		return profileDetails;

@@ -11,9 +11,15 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.TimeZone;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.info121.iguard.utils.PrefDB;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -111,22 +117,22 @@ public class App extends Application {
                 .build());
 
 
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.e(TAG, "getInstanceId failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new Instance ID token
-//                        FCM_TOKEN = task.getResult().getToken();
-//
-//                    }
-//                });
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
 
-        Log.e("TOKEN : " , FCNToken);
+                    // Get new Instance ID token
+                 //   FCNToken = task.getResult().getToken();
+                    Log.e("NEW FCM Token: ", FCNToken);
+
+
+                });
+
+
+      //  Log.e("TOKEN : " , FCNToken);
 
 //        File f = new File(Environment.getExternalStorageDirectory(), PHOTO_FOLDER);
 //

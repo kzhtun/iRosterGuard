@@ -36,7 +36,7 @@ public class ShortageAdapter extends RecyclerView.Adapter<ShortageAdapter.ViewHo
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
-        View searchView = inflater.inflate(R.layout.cell_job_item, parent, false);
+        View searchView = inflater.inflate(R.layout.cell_job_item_detail, parent, false);
         return new ViewHolder(searchView);
 
     }
@@ -46,8 +46,8 @@ public class ShortageAdapter extends RecyclerView.Adapter<ShortageAdapter.ViewHo
 
         final int sdk = android.os.Build.VERSION.SDK_INT;
 
-        viewHolder.siteId.setText(mListJob.get(i).getId());
-        viewHolder.siteName.setText(mListJob.get(i).getSiteName());
+//        viewHolder.siteId.setText(mListJob.get(i).getId());
+//        viewHolder.siteName.setText(mListJob.get(i).getSiteName());
 //        viewHolder.shift.setText(mListJob.get(i).getShift());
 //        viewHolder.post.setText(mListJob.get(i).getPost());
 //        viewHolder.status.setText(mListJob.get(i).getStatus());

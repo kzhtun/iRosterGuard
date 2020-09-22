@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.info121.iguard.activities.JobListActivity;
 import com.info121.iguard.R;
 import com.info121.iguard.models.JobSummary;
 
@@ -91,16 +90,16 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
         viewHolder.sector.setText(mListJob.get(i).getSector());
         viewHolder.count.setText(mListJob.get(i).getCount());
 
-        viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, JobListActivity.class);
-                intent.putExtra("SECTOR", viewHolder.sector.getText());
-
-                mContext.startActivity(intent);
-
-            }
-        });
+//        viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext, JobListActivity.class);
+//                intent.putExtra("SECTOR", viewHolder.sector.getText());
+//
+//                mContext.startActivity(intent);
+//
+//            }
+//        });
     }
 
     @Override

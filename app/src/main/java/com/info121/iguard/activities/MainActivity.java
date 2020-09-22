@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -135,25 +136,22 @@ public class MainActivity extends AbstractActivity {
         mSubTitle.setText(dateString);
 
 
-        mCalendarView.setOnDayClickListener(new OnDayClickListener() {
-            @Override
-            public void onDayClick(EventDay eventDay) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
-                Calendar calendar = eventDay.getCalendar();
+        mCalendarView.setOnDayClickListener(eventDay -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
+            Calendar calendar7 = eventDay.getCalendar();
 
-                Date selectedDate = new Date(calendar.getTimeInMillis());
-                String selectedDateString = sdf.format(selectedDate);
+            Date selectedDate = new Date(calendar7.getTimeInMillis());
+            String selectedDateString = sdf.format(selectedDate);
 
-                Date min = Util.convertDateStringToDate("24/05/2020", "dd/MM/yyyy");
-                Date max = Util.convertDateStringToDate("01/06/2020", "dd/MM/yyyy");
+        //    getStartDateOfWeek(selectedDate);
 
-                if (selectedDate.after(min) && selectedDate.before(max)) {
-                    Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
-                    intent.putExtra("DATE", selectedDateString);
+            Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
+            intent.putExtra("sDate", Util.getStartDateOfWeek(selectedDate));
+            intent.putExtra("eDate", Util.getEndDateOfWeek(selectedDate));
+            startActivity(intent);
 
-                    startActivity(intent);
-                }
-            }
+
+
         });
 
         mNavigationView.setItemIconTintList(null);
@@ -214,6 +212,8 @@ public class MainActivity extends AbstractActivity {
             }
         });
     }
+
+
 
 
 }

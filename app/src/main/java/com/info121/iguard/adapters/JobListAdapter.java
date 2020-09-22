@@ -1,104 +1,102 @@
 package com.info121.iguard.adapters;
 
 import android.content.Context;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.info121.iguard.R;
 import com.info121.iguard.models.JobDetail;
+import com.info121.iguard.utils.Util;
 
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class JobListAdapter extends BaseAdapter {
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> {
-    private Context mContext;
-    List<JobDetail> mListJob;
+    List<JobDetail> mJobList = new ArrayList<>();
+    Context mContext;
 
-    public JobListAdapter(Context mContext, List<JobDetail> mListJob) {
-        this.mContext = mContext;
-        this.mListJob = mListJob;
-    }
-
-    @NonNull
-    @Override
-    public JobListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        mContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-
-        View searchView = inflater.inflate(R.layout.cell_job_item, parent, false);
-        return new ViewHolder(searchView);
-
+    public JobListAdapter(List<JobDetail> jobs, Context context) {
+        this.mJobList = jobs;
+        this.mContext = context;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public int getCount() {
+        return mJobList.size() + 1;
+    }
 
-        final int sdk = android.os.Build.VERSION.SDK_INT;
+    @Override
+    public Object getItem(int i) {
+        return null;
+    }
 
-        viewHolder.siteName.setText(mListJob.get(i).getSiteName());
-        viewHolder.address.setText(mListJob.get(i).getAddress());
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
 
-        viewHolder.shift.setText(mListJob.get(i).getShift());
-        viewHolder.shiftDesc.setText(mListJob.get(i).getShiftDesc());
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0)
+            return TYPE_HEADER;
+        else
+            return TYPE_ITEM;
 
-        viewHolder.position.setText(mListJob.get(i).getPost());
-        viewHolder.positionDesc.setText(mListJob.get(i).getPostDesc());
+    }
 
-        viewHolder.date.setText(mListJob.get(i).getDate());
-        viewHolder.status.setText(mListJob.get(i).getStatus());
 
-        if(mListJob.get(i).getStatus().toString().equalsIgnoreCase("CFM")){
-            viewHolder.status.setTextColor(ContextCompat.getColor(mContext, R.color.green));
-        }else{
-            viewHolder.status.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+
+
+        if (i == 0) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.cell_job_header, null);
+        } else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.cell_job_item, null);
         }
 
-    }
 
-    @Override
-    public int getItemCount() {
-        return mListJob.size();
-    }
+        if (i > 0) {
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView sr = view.findViewById(R.id.sr);
+            TextView date = view.findViewById(R.id.date);
+            TextView position = view.findViewById(R.id.position);
+            TextView status = view.findViewById(R.id.status);
 
-        @BindView(R.id.site_name)
-        TextView siteName;
+            JobDetail jd = mJobList.get(i - 1);
 
-        @BindView(R.id.address)
-        TextView address;
+            Date d = Util.convertDateStringToDate(jd.getJobdate(), "MM/dd/yyyy");
 
-        @BindView(R.id.date)
-        TextView date;
+            sr.setText(i + ".");
+            date.setText(Util.convertDateToString(d, "dd-MMM-yyyy, E"));
+            position.setText(jd.getGuardGrade());
 
-        @BindView(R.id.status)
-        TextView status;
+            if (jd.getStatus().equalsIgnoreCase("PENDING")) {
+                status.setText("PND");
+                status.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+            } else {
+                status.setText("CFM");
+                status.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+            }
 
-        @BindView(R.id.shift)
-        TextView shift;
-
-        @BindView(R.id.shift_desc)
-        TextView shiftDesc;
-
-        @BindView(R.id.position)
-        TextView position;
-
-        @BindView(R.id.position_desc)
-        TextView positionDesc;
-
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
         }
+
+//
+//        user.setText(devices.get(i).getGuardname());
+//        deviceId.setText(devices.get(i).gethPNo());
+
+
+        return view;
     }
+
 }

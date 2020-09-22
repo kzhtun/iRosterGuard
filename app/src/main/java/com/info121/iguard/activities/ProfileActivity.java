@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.info121.iguard.AbstractActivity;
 import com.info121.iguard.App;
 import com.info121.iguard.R;
-import com.info121.iguard.adapters.DeviceListAdapter;
+
 import com.info121.iguard.api.RestClient;
 import com.info121.iguard.models.ObjectRes;
 import com.info121.iguard.models.ProfileDetails;
