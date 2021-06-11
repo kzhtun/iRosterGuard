@@ -94,27 +94,35 @@ public class LoginActivity extends AppCompatActivity {
         mDate.setText(dateString);
         mTime.setText(timeString);
 
-        final Handler timer = new Handler(getMainLooper());
-
-        timer.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showTime();
-                timer.postDelayed(this, 60000);
-            }
-        }, 60000);
+//        final Handler timer = new Handler(getMainLooper());
+//
+//        timer.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showTime();
+//                timer.postDelayed(this, 60000);
+//            }
+//        }, 60000);
 
         mUiVersion.setText("Ver " + Util.getVersionName(mContext));
         initializeNFC();
 
 
+        if (prefDB.getBoolean(App.CONST_REMEMBER_ME)) {
+            mUserName.setText(prefDB.getString(App.GuardID));
+            mRemember.setChecked(true);
+        }
+
         Log.e("CODE : ", Util.getSpecialKey() + "," +
                 Util.getMobileKey(mContext));
 
-        mUserName.setText("zTEST001");
-        mPassword.setText("p@ssw0rd");
 
 
+        mUserName.setText("M000072");
+        mPassword.setText("metropolis");
+
+//        mUserName.setText("M000035");
+//        mPassword.setText("metropolis");
 
 
     }
@@ -130,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
         App.GuardID = mUserName.getText().toString();
-        App.LastLogin = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE, dd MMM yyyy, hh:mm a");
+        App.LastLogin = "Last Login : " + Util.convertDateToString(Calendar.getInstance().getTime(), "EEE, dd MMM yyyy, hh:mm a");
 
 
         if (mPassword.getText().toString().length() == 0) {
@@ -140,7 +148,30 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        callValidateUser();
+        if (mRemember.isChecked()) {
+            prefDB.putBoolean(App.CONST_REMEMBER_ME, true);
+           // prefDB.putString(App.GuardID, mUserName.getText().toString());
+        }else {
+            prefDB.putBoolean(App.CONST_REMEMBER_ME, false);
+        }
+
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    App.FCNToken = task.getResult().getToken();
+                    Log.e("NEW FCM Token: ", App.FCNToken);
+
+                    callValidateUser();
+                });
+
+       // callValidateUser();
+
 
     }
 
@@ -186,7 +217,6 @@ public class LoginActivity extends AppCompatActivity {
         // instantiate wiht new Token
         //RestClient.Dismiss();
 
-
         prefDB.putString(App.CONST_USER_NAME, App.GuardID);
 //        prefDB.putString(App.CONST_DEVICE_ID, App.deviceID);
 //        prefDB.putLong(App.CONST_TIMER_DELAY, App.timerDelay);
@@ -201,9 +231,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.e(TAG, "Login Successful");
 
-        // login successful
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish();
+        callGetUserProfile();
+
     }
 
     @OnClick(R.id.forgot_password)
@@ -330,6 +359,33 @@ public class LoginActivity extends AppCompatActivity {
     private void WriteModeOff() {
         writeMode = false;
         nfcAdapter.disableForegroundDispatch(this);
+    }
+
+
+    private void callGetUserProfile() {
+        Call<ObjectRes> call = RestClient.METRO().getApiService().GetUserProfile(
+                App.GuardID,
+                Util.getSpecialKey(),
+                Util.getMobileKey(mContext)
+        );
+
+        call.enqueue(new Callback<ObjectRes>() {
+            @Override
+            public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
+                Log.e("Get User Profile : ", "Success");
+
+                App.currentUserProfile = response.body().getProfileDetails().get(0);
+
+                // login successful
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ObjectRes> call, Throwable t) {
+                Log.e("Get User Profile : ", "Failed");
+            }
+        });
     }
 
 }

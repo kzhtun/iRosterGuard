@@ -1,6 +1,7 @@
 package com.info121.iguard.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +27,9 @@ import com.info121.iguard.models.ObjectRes;
 import com.info121.iguard.models.SiteDetail;
 import com.info121.iguard.utils.Util;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,7 +73,7 @@ public class JobListBySiteActivity extends AbstractActivity {
     ImageView mViewSwitch;
 
     String sDateString, eDateString;
-    Date sDate,eDate;
+    Date sDate, eDate;
 
     Boolean isGroup = true;
 
@@ -93,7 +97,7 @@ public class JobListBySiteActivity extends AbstractActivity {
 
 
     @OnClick(R.id.prev)
-    public void prevOnClick(){
+    public void prevOnClick() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(sDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
 
@@ -103,7 +107,7 @@ public class JobListBySiteActivity extends AbstractActivity {
     }
 
     @OnClick(R.id.next)
-    public void nextOnClick(){
+    public void nextOnClick() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(sDate); // Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
 
@@ -112,7 +116,7 @@ public class JobListBySiteActivity extends AbstractActivity {
         loadPrevNextWeekJobs(cal);
     }
 
-    private void loadPrevNextWeekJobs(Calendar cal){
+    private void loadPrevNextWeekJobs(Calendar cal) {
         sDateString = Util.getStartDateOfWeek(cal.getTime());
         eDateString = Util.getEndDateOfWeek(cal.getTime());
 
@@ -120,7 +124,8 @@ public class JobListBySiteActivity extends AbstractActivity {
         eDate = Util.convertDateStringToDate(eDateString, "MM-dd-yyyy");
 
         mSwipeLayout.setRefreshing(true);
-        getGuardJobs();
+        getGuardJobsBySite();
+        getGuardJobsByWeek();
 
         Log.e("sDate : ", sDateString);
         Log.e("eDate : ", eDateString);
@@ -136,17 +141,31 @@ public class JobListBySiteActivity extends AbstractActivity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
+
             if (extras != null) {
-                sDateString = extras.getString("sDate");
-                eDateString = extras.getString("eDate");
+                if (extras.getString("TYPE") != null) {
+                    if (extras.getString("TYPE").equalsIgnoreCase("WEEK")) {
+                        isGroup = false;
+                        sDateString = Util.getStartDateOfWeek(new Date());
+                        eDateString = Util.getEndDateOfWeek(new Date());
+                    }
+
+                    if (extras.getString("TYPE").equalsIgnoreCase("SITE")) {
+                        isGroup = true;
+                        sDateString = Util.getStartDateOfWeek(new Date());
+                        eDateString = Util.getEndDateOfWeek(new Date());
+                    }
+                } else {
+                    sDateString = extras.getString("sDate");
+                    eDateString = extras.getString("eDate");
+
+                }
             }
-        } else {
-            sDateString = (String) savedInstanceState.getSerializable("sDate");
-            eDateString = (String) savedInstanceState.getSerializable("eDate");
         }
 
         sDate = Util.convertDateStringToDate(sDateString, "MM-dd-yyyy");
         eDate = Util.convertDateStringToDate(eDateString, "MM-dd-yyyy");
+
 
         // set toolbar
         mToolbar = findViewById(R.id.toolbar);
@@ -158,20 +177,20 @@ public class JobListBySiteActivity extends AbstractActivity {
         jobListBySiteAdapter = new JobListBySiteAdapter(mContext, mSiteList);
         jobDetailListAdapter = new JobDetailListAdapter(mContext, mJobList);
 
-        mRecyclerView.setAdapter(jobListBySiteAdapter);
 
         // data loading
         mSwipeLayout.setRefreshing(true);
-        getGuardJobs();
+        getGuardJobsBySite();
+        getGuardJobsByWeek();
 
         mSwipeLayout.setOnRefreshListener(() -> {
             mSwipeLayout.setRefreshing(true);
-            getGuardJobs();
+            getGuardJobsBySite();
+            getGuardJobsByWeek();
         });
 
 
-
-        mTitle.setText("JOB LIST BY WEEK");
+        mTitle.setText("JOB LIST BY SITE");
         mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
 
         mViewSwitch.setOnClickListener(view -> {
@@ -200,10 +219,16 @@ public class JobListBySiteActivity extends AbstractActivity {
             }
         });
 
+
+        if (isGroup)
+            mRecyclerView.setAdapter(jobListBySiteAdapter);
+        else
+            mRecyclerView.setAdapter(jobDetailListAdapter);
+
     }
 
 
-    private void getGuardJobs() {
+    private void getGuardJobsBySite() {
 
         mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
 
@@ -211,6 +236,61 @@ public class JobListBySiteActivity extends AbstractActivity {
                 sDateString,
                 eDateString,
                 App.GuardID,
+                "SITE",
+                Util.getSpecialKey(),
+                Util.getMobileKey(mContext)
+        );
+
+
+        call.enqueue(new Callback<ObjectRes>() {
+            @Override
+            public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
+                Log.e("Get guard jobs : ", "Success");
+
+                mSwipeLayout.setRefreshing(false);
+                mSiteList = new ArrayList<>();
+                mJobList = new ArrayList<>();
+
+                if (response.body().getResponsemessage().equalsIgnoreCase("Success")) {
+
+                    mSiteList = response.body().getSiteDetails();
+                    // site list
+                    jobListBySiteAdapter.update(mSiteList);
+
+
+                    if (mSiteList.size() > 0) {
+                        mNoData.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    } else {
+                        mNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    }
+
+
+                } else {
+                    mNoData.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ObjectRes> call, Throwable t) {
+                mSwipeLayout.setRefreshing(false);
+                Log.e("Get guard jobs : ", "Failed");
+            }
+        });
+
+    }
+
+    private void getGuardJobsByWeek() {
+
+        mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
+
+        Call<ObjectRes> call = RestClient.METRO().getApiService().GetGuardJobs(
+                sDateString,
+                eDateString,
+                App.GuardID,
+                "WEEK",
                 Util.getSpecialKey(),
                 Util.getMobileKey(mContext)
         );
@@ -229,10 +309,6 @@ public class JobListBySiteActivity extends AbstractActivity {
 
                     mSiteList = response.body().getSiteDetails();
 
-                    // site list
-                    jobListBySiteAdapter.update(mSiteList);
-
-
                     for (SiteDetail s : mSiteList) {
                         mJobList.addAll(s.getJobDetails());
                     }
@@ -240,16 +316,15 @@ public class JobListBySiteActivity extends AbstractActivity {
                     // job detail list
                     jobDetailListAdapter.update(mJobList);
 
-                    if(mSiteList.size() > 0){
+                    if (mSiteList.size() > 0) {
                         mNoData.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         mNoData.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.GONE);
                     }
 
-
-                }else{
+                } else {
                     mNoData.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
                 }
@@ -261,8 +336,15 @@ public class JobListBySiteActivity extends AbstractActivity {
                 Log.e("Get guard jobs : ", "Failed");
             }
         });
-
     }
 
 
+    @Subscribe
+    public void onEvent(String action) {
+        if(action.equalsIgnoreCase("REFRESH_JOBS")){
+            getGuardJobsBySite();
+            getGuardJobsByWeek();
+            Log.e("Refresh Jobs : ", "Success");
+        }
+    }
 }

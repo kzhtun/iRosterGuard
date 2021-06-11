@@ -2,29 +2,40 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/group_1" android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/job_list"
-            android:checked="false"
-            android:icon="@mipmap/m_job_list"
-            android:title="This Week Jobs" />
+<!--        <item-->
+<!--            android:id="@+id/job_list"-->
+<!--            android:checked="false"-->
+<!--            android:icon="@mipmap/m_job_list"-->
+<!--            android:title="This Week Jobs" />-->
 
         <item
-            android:id="@+id/notificaiton"
+            android:id="@+id/calendar"
             android:checked="false"
             android:icon="@mipmap/m_noti"
-            android:title="Notification" />
+            android:title="CALENDAR" />
 
+        <item
+            android:id="@+id/by_site"
+            android:checked="false"
+            android:icon="@mipmap/m_job_list"
+            android:title="JOB LIST by SITE" />
+
+        <item
+            android:id="@+id/by_week"
+            android:checked="false"
+            android:icon="@mipmap/m_job_list"
+            android:title="JOB LIST by WEEK" />
         <item
             android:id="@+id/profile"
             android:checked="false"
             android:icon="@mipmap/m_profile"
-            android:title="Profile" />
+            android:title="PROFILE" />
 
         <item
             android:id="@+id/logout"
             android:checked="false"
             android:icon="@mipmap/m_logout"
-            android:title="Logout" />
+            android:title="LOGOUT" />
 
     </group>
 

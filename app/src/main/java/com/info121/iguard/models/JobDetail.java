@@ -4,6 +4,20 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class JobDetail {
+
+
+    @SerializedName("ConfirmationHours")
+    @Expose
+    private String confirmationHours;
+
+    @SerializedName("RequireAcknowledgement")
+    @Expose
+    private String requireAcknowledgement;
+
+    @SerializedName("RequireConfirmation")
+    @Expose
+    private String requireConfirmation;
+
     @SerializedName("GuardGrade")
     @Expose
     private String guardGrade;
@@ -53,6 +67,33 @@ public class JobDetail {
     @Expose
     private String status;
 
+    @SerializedName("checked")
+    @Expose
+    private Boolean checked = false;
+
+    public String getConfirmationHours() {
+        return confirmationHours;
+    }
+
+    public void setConfirmationHours(String confirmationHours) {
+        this.confirmationHours = confirmationHours;
+    }
+
+    public String getRequireAcknowledgement() {
+        return requireAcknowledgement;
+    }
+
+    public void setRequireAcknowledgement(String requireAcknowledgement) {
+        this.requireAcknowledgement = requireAcknowledgement;
+    }
+
+    public String getRequireConfirmation() {
+        return requireConfirmation;
+    }
+
+    public void setRequireConfirmation(String requireConfirmation) {
+        this.requireConfirmation = requireConfirmation;
+    }
 
     public String getGuardGrade() {
         return guardGrade;
@@ -180,5 +221,13 @@ public class JobDetail {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 }

@@ -13,13 +13,16 @@ import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.info121.iguard.App;
+import com.info121.iguard.R;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -29,12 +32,50 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by KZHTUN on 7/20/2017.
  */
 
 public class Util {
+    public static long minutesTomillis(int minutes){
+        return minutes * 60 * 1000;
+    }
+
+    public static String minutesToHHMMSS(int minutes){
+        long millis = minutes * 60 * 1000;
+        return millisToHHMMSS(millis);
+    }
+
+    public static String millisToHHMMSS(long millis){
+        String hhmmss =  String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), // The change is in this line
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+        return hhmmss;
+    }
+
+    public static void setButtonEnable(Context context, Button button, boolean flag){
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+
+        button.setEnabled(flag);
+
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            if(flag)
+                button.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.rounded_button_default) );
+            else
+                button.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.rounded_button_grey) );
+        } else {
+            if(flag)
+                button.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_button_default));
+            else
+                button.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_button_grey));
+        }
+    }
 
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;

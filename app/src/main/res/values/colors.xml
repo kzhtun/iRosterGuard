@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorPrimary">#0094D6</color>
+    <color name="colorPrimaryDark">#0066BF</color>
     <color name="colorAccent">#FF9800</color>
 
     <color name="toolbar_back">#F5A01A</color>
@@ -63,7 +63,12 @@
     <color name="normal_button">#004881</color>
     <color name="normal_button_stroke">#004881</color>
 
+    <color name="disabled_button">#878787</color>
+    <color name="disabled_button_stroke">#C3DBE3</color>
+
     <color name="navigation_text">#004881</color>
+
+    <color name="timer_text">#006DA9</color>
 
     <color name="title_text">#111111</color>
     <color name="cell_text_light">#8BA1AF</color>

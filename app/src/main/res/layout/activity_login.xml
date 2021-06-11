@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:gravity="right"
+                android:visibility="invisible"
                 android:orientation="horizontal">
 
                 <TextView
@@ -117,7 +118,7 @@
                 android:layout_height="32dp"
                 android:background="@drawable/rounded_edittext"
                 android:paddingLeft="10dp"
-                android:text = "HASAN"
+                android:text = ""
                 android:textColor="@color/edit_text_color" />
 
             <ProgressBar

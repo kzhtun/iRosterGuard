@@ -25,7 +25,7 @@
         <activity android:name="com.info121.iguard.activities.CalendarActivity"/>
         <activity android:name="com.info121.iguard.activities.NotificationActivity" />
         <activity android:name="com.info121.iguard.activities.JobDetailActivity" />
-        <activity android:name="com.info121.iguard.activities.JobListBySiteActivity" />
+        <activity android:name="com.info121.iguard.activities.JobListBySiteActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name="com.info121.iguard.activities.ForgotPasswordActivity" />
         <activity android:name="com.info121.iguard.activities.MainActivity" />
         <activity android:name="com.info121.iguard.activities.ProfileActivity"/>

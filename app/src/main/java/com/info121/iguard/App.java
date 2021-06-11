@@ -10,16 +10,11 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 
-
-import androidx.annotation.NonNull;
-
 import java.util.TimeZone;
 
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+
+import com.info121.iguard.models.ProfileDetails;
 import com.info121.iguard.utils.PrefDB;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -31,12 +26,9 @@ public class App extends Application {
     public static String DEVICE_TYPE = "ANDROID";
     String TAG = "Application";
 
-    //LIVE
-  // public static String CONST_REST_API_URL = "https://vivocityservicemgt.vivocity.com.sg/restapimapletree/MyLimoService.svc/";
 
    //DEV
-  public static String CONST_REST_API_URL = "http://info121.sytes.net:84/restapimetropolis/MyLimoService.svc/";
-
+   public static String CONST_REST_API_URL = "http://info121.sytes.net/restapimetropolis/MyLimoService.svc/";
 
 
     public static String CONST_USER_NAME = "USER_NAME";
@@ -81,7 +73,7 @@ public class App extends Application {
     public static String test = "";
 
 
-
+    public static ProfileDetails currentUserProfile;
 
     // mcts server "124.6.61.70"
     // NEW SERVER
@@ -107,7 +99,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(new CalligraphyInterceptor(
                         new CalligraphyConfig.Builder()
@@ -125,7 +116,7 @@ public class App extends Application {
                     }
 
                     // Get new Instance ID token
-                 //   FCNToken = task.getResult().getToken();
+                     FCNToken = task.getResult().getToken();
                     Log.e("NEW FCM Token: ", FCNToken);
 
 

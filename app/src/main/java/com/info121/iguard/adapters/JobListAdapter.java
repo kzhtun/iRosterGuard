@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -58,7 +59,6 @@ public class JobListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-
         if (i == 0) {
             view = LayoutInflater.from(mContext).inflate(R.layout.cell_job_header, null);
         } else {
@@ -72,6 +72,7 @@ public class JobListAdapter extends BaseAdapter {
             TextView date = view.findViewById(R.id.date);
             TextView position = view.findViewById(R.id.position);
             TextView status = view.findViewById(R.id.status);
+            CheckBox checkBox = view.findViewById(R.id.select);
 
             JobDetail jd = mJobList.get(i - 1);
 
@@ -88,6 +89,17 @@ public class JobListAdapter extends BaseAdapter {
                 status.setText("CFM");
                 status.setTextColor(ContextCompat.getColor(mContext, R.color.green));
             }
+
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkBox.isChecked())
+                        mJobList.get(i-1).setChecked(true);
+                    else
+                        mJobList.get(i-1).setChecked(false);
+                }
+            });
 
         }
 
