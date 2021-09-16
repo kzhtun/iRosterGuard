@@ -27,8 +27,13 @@ public class App extends Application {
     String TAG = "Application";
 
 
+
+
+   // LIVE
+   public static String CONST_REST_API_URL = "http://roster.mpolis.sg/restapimetropolis/MyLimoService.svc/";
+
    //DEV
-   public static String CONST_REST_API_URL = "http://info121.sytes.net/restapimetropolis/MyLimoService.svc/";
+  // public static String CONST_REST_API_URL = "http://info121.sytes.net/restapimetropolis/MyLimoService.svc/";
 
 
     public static String CONST_USER_NAME = "USER_NAME";

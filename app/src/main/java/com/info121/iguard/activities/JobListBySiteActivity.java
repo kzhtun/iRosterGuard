@@ -148,12 +148,14 @@ public class JobListBySiteActivity extends AbstractActivity {
                         isGroup = false;
                         sDateString = Util.getStartDateOfWeek(new Date());
                         eDateString = Util.getEndDateOfWeek(new Date());
+                        mTitle.setText("JOB LIST BY WEEK");
                     }
 
                     if (extras.getString("TYPE").equalsIgnoreCase("SITE")) {
                         isGroup = true;
                         sDateString = Util.getStartDateOfWeek(new Date());
                         eDateString = Util.getEndDateOfWeek(new Date());
+                        mTitle.setText("JOB LIST BY SITE");
                     }
                 } else {
                     sDateString = extras.getString("sDate");
@@ -190,7 +192,7 @@ public class JobListBySiteActivity extends AbstractActivity {
         });
 
 
-        mTitle.setText("JOB LIST BY SITE");
+
         mSubtile.setText(Util.convertDateToString(sDate, "dd MMM") + " ~ " + Util.convertDateToString(eDate, "dd MMM"));
 
         mViewSwitch.setOnClickListener(view -> {

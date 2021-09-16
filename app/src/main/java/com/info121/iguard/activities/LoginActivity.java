@@ -117,20 +117,17 @@ public class LoginActivity extends AppCompatActivity {
                 Util.getMobileKey(mContext));
 
 
-
-        mUserName.setText("M000072");
-        mPassword.setText("metropolis");
-
-//        mUserName.setText("M000035");
+//        mUserName.setText("M000764");
 //        mPassword.setText("metropolis");
 
+        mUserName.setText("M000764");
+        mPassword.setText("test");
 
     }
 
     private void showTime() {
         String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "hh:mm a");
         mTime.setText(dateString.toString());
-
     }
 
     @OnClick(R.id.login)
