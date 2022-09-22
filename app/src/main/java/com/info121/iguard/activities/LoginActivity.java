@@ -107,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
         mUiVersion.setText("Ver " + Util.getVersionName(mContext));
         initializeNFC();
 
-
         if (prefDB.getBoolean(App.CONST_REMEMBER_ME)) {
             mUserName.setText(prefDB.getString(App.GuardID));
             mRemember.setChecked(true);
@@ -120,8 +119,8 @@ public class LoginActivity extends AppCompatActivity {
 //        mUserName.setText("M000764");
 //        mPassword.setText("metropolis");
 
-        mUserName.setText("M000764");
-        mPassword.setText("test");
+        mUserName.setText("M000017");
+        mPassword.setText("metropolis");
 
     }
 
@@ -132,6 +131,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.login)
     public void loginOnClick() {
+
+       // loginSuccessful();
+
+
         mProgressBar.setVisibility(View.VISIBLE);
 
         App.GuardID = mUserName.getText().toString();

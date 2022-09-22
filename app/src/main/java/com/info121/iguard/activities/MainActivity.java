@@ -119,7 +119,7 @@ public class MainActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-   //     startActivity(new Intent(MainActivity.this, LoginActivity.class));
+   //   startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
         ButterKnife.bind(this);
 
@@ -158,60 +158,60 @@ public class MainActivity extends AbstractActivity {
             }
         });
 
-        List<EventDay> events = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.setTime(Util.convertDateStringToDate("26/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar1, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.setTime(Util.convertDateStringToDate("27/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar2, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar3 = Calendar.getInstance();
-        calendar3.setTime(Util.convertDateStringToDate("28/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar3, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar4 = Calendar.getInstance();
-        calendar4.setTime(Util.convertDateStringToDate("29/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar4, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar5 = Calendar.getInstance();
-        calendar5.setTime(Util.convertDateStringToDate("30/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar5, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        Calendar calendar6 = Calendar.getInstance();
-        calendar6.setTime(Util.convertDateStringToDate("31/05/2020", "dd/MM/yyyy"));
-        events.add(new EventDay(calendar6, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-
-        mCalendarView.setEvents(events);
-
-        String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE dd MMM yyyy");
-
-        //mJobDate.setText(Util.convertDateToString(Calendar.getInstance().getTime(), "dd-MMM-yyyy, EEE"));
-        mSubTitle.setText(dateString);
-
-
-        mCalendarView.setOnDayClickListener(eventDay -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
-            Calendar calendar7 = eventDay.getCalendar();
-
-            Date selectedDate = new Date(calendar7.getTimeInMillis());
-            String selectedDateString = sdf.format(selectedDate);
-
-        //    getStartDateOfWeek(selectedDate);
-
-            Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
-            intent.putExtra("sDate", Util.getStartDateOfWeek(selectedDate));
-            intent.putExtra("eDate", Util.getEndDateOfWeek(selectedDate));
-            startActivity(intent);
-
-
-
-        });
+//        List<EventDay> events = new ArrayList<>();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar1 = Calendar.getInstance();
+//        calendar1.setTime(Util.convertDateStringToDate("26/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar1, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar2 = Calendar.getInstance();
+//        calendar2.setTime(Util.convertDateStringToDate("27/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar2, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar3 = Calendar.getInstance();
+//        calendar3.setTime(Util.convertDateStringToDate("28/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar3, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar4 = Calendar.getInstance();
+//        calendar4.setTime(Util.convertDateStringToDate("29/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar4, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar5 = Calendar.getInstance();
+//        calendar5.setTime(Util.convertDateStringToDate("30/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar5, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        Calendar calendar6 = Calendar.getInstance();
+//        calendar6.setTime(Util.convertDateStringToDate("31/05/2020", "dd/MM/yyyy"));
+//        events.add(new EventDay(calendar6, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+//
+//        mCalendarView.setEvents(events);
+//
+//        String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE dd MMM yyyy");
+//
+//        //mJobDate.setText(Util.convertDateToString(Calendar.getInstance().getTime(), "dd-MMM-yyyy, EEE"));
+//        mSubTitle.setText(dateString);
+//
+//
+//        mCalendarView.setOnDayClickListener(eventDay -> {
+//            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
+//            Calendar calendar7 = eventDay.getCalendar();
+//
+//            Date selectedDate = new Date(calendar7.getTimeInMillis());
+//            String selectedDateString = sdf.format(selectedDate);
+//
+//        //    getStartDateOfWeek(selectedDate);
+//
+//            Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
+//            intent.putExtra("sDate", Util.getStartDateOfWeek(selectedDate));
+//            intent.putExtra("eDate", Util.getEndDateOfWeek(selectedDate));
+//            startActivity(intent);
+//
+//
+//
+//        });
 
         mNavigationView.setItemIconTintList(null);
 

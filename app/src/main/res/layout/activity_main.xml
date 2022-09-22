@@ -28,7 +28,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -74,6 +74,39 @@
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/checkin"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:letterSpacing="0.2"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                fontPath="fonts/Lato-Bold.ttf"
+                android:background="@drawable/rounded_button_green"
+                android:text="Check In"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/checkout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:letterSpacing="0.2"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                fontPath="fonts/Lato-Bold.ttf"
+                android:background="@drawable/rounded_button_red"
+                android:text="Check Out"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
