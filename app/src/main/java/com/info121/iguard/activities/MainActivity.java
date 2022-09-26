@@ -1,5 +1,7 @@
 package com.info121.iguard.activities;
 
+import static com.info121.iguard.App.prefDB;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -10,10 +12,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -113,6 +117,7 @@ public class MainActivity extends AbstractActivity {
     JobDetail jobDetail;
 
     MenuItem mProfile, mNotification, mCalendar, mDeskboard, mLogout, mJobListBySite, mJobListByWeek;
+    SwitchCompat mBiometricSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,9 +224,33 @@ public class MainActivity extends AbstractActivity {
         mLastLogin = (TextView) headerView.findViewById(R.id.last_login);
         mUserName = (TextView) headerView.findViewById(R.id.user_name);
 
-
         mUserName.setText(App.currentUserProfile.getGuardname());
         mLastLogin.setText("Last Login : " + Util.convertDateToString(Calendar.getInstance().getTime(), "dd-MMM-yyyy hh:mm a"));
+
+        mBiometricSwitch = (SwitchCompat) mNavigationView.getMenu().findItem(R.id.biometric_switch).getActionView().findViewById(R.id.myswitch);
+
+        if(prefDB.getBoolean(App.CONST_USE_BIOMETRIC))
+            mBiometricSwitch.setChecked(true);
+        else
+            mBiometricSwitch.setChecked(false);
+
+
+        mBiometricSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(compoundButton.isChecked()){
+                    Log.e("biometric : ", "ON");
+                    prefDB.putBoolean(App.CONST_USE_BIOMETRIC, true);
+                    prefDB.putString(App.CONST_USER_NAME, App.GuardID);
+                    prefDB.putString(App.CONST_PASSWORD, App.GuardPSW);
+
+                }else{
+                    Log.e("biometric : ", "OFF");
+                    prefDB.putBoolean(App.CONST_USE_BIOMETRIC, false);
+                }
+            }
+    });
+
 
         mJobListBySite = mNavigationView.getMenu().findItem(R.id.by_site);
         mJobListBySite.setOnMenuItemClickListener(menuItem -> {

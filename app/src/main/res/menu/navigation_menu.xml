@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/group_1" android:checkableBehavior="single">
 
 <!--        <item-->
@@ -7,6 +8,12 @@
 <!--            android:checked="false"-->
 <!--            android:icon="@mipmap/m_job_list"-->
 <!--            android:title="This Week Jobs" />-->
+        <item
+            android:id="@+id/biometric_switch"
+            android:icon="@mipmap/m_profile"
+            android:title="Use Biometric"
+            app:actionLayout="@layout/layout_switch"
+            />
 
         <item
             android:id="@+id/calendar"
@@ -36,6 +43,8 @@
             android:checked="false"
             android:icon="@mipmap/m_logout"
             android:title="LOGOUT" />
+
+
 
     </group>
 

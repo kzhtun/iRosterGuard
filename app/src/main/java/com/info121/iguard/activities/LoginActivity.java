@@ -16,11 +16,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.info121.iguard.App;
@@ -28,6 +33,7 @@ import com.info121.iguard.R;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
+import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +50,11 @@ import com.info121.iguard.utils.Util;
 public class LoginActivity extends AppCompatActivity {
     String TAG = this.getClass().getSimpleName();
 
+    BiometricManager biometricManager;
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
+
+
 
     Tag myTag;
     NfcAdapter nfcAdapter;
@@ -55,6 +66,10 @@ public class LoginActivity extends AppCompatActivity {
     // -- NFC End --//
 
     PrefDB prefDB;
+
+    @BindView(R.id.layout_login)
+    LinearLayout mLoginLayout;
+
 
 
     @BindView(R.id.ver)
@@ -80,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
 
     Context mContext = LoginActivity.this;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +105,14 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         prefDB = new PrefDB(getApplicationContext());
 
+
         String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE dd MMM yyyy");
         String timeString = Util.convertDateToString(Calendar.getInstance().getTime(), "hh:mm a");
 
         mDate.setText(dateString);
         mTime.setText(timeString);
+
+
 
 //        final Handler timer = new Handler(getMainLooper());
 //
@@ -119,9 +139,78 @@ public class LoginActivity extends AppCompatActivity {
 //        mUserName.setText("M000764");
 //        mPassword.setText("metropolis");
 
-        mUserName.setText("M000017");
-        mPassword.setText("metropolis");
+//        mUserName.setText("M000017");
+//        mPassword.setText("metropolis");
 
+
+        // Biometric
+        checkBiometricHardware();
+
+        
+        // biometric test on emulator
+//        App.GuardID =  prefDB.getString(App.CONST_USER_NAME);
+//        App.GuardPSW =  prefDB.getString(App.CONST_PASSWORD);
+//        performLogin(App.GuardID,  App.GuardPSW);
+
+
+        // check uid & psw or biometric login
+        if(prefDB.getBoolean(App.CONST_USE_BIOMETRIC)){
+          displayBiometricLogin();
+        }
+
+    }
+
+
+
+    private void checkBiometricHardware(){
+        biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate()){
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                Toast.makeText(getApplicationContext(), "Device doesn't support biometric", Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                Toast.makeText(getApplicationContext(), "Hardware is not working", Toast.LENGTH_SHORT).show();
+                break;
+
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                Toast.makeText(getApplicationContext(), "No biometric assigned", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    private void displayBiometricLogin(){
+        Executor executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+
+                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+
+                App.GuardID =  prefDB.getString(App.CONST_USER_NAME);
+                App.GuardPSW =  prefDB.getString(App.CONST_PASSWORD);
+
+                performLogin(App.GuardID,  App.GuardPSW);
+
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Metropolis")
+                .setDescription("Use Fingerprint to Login")
+                .setDeviceCredentialAllowed(true)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
     }
 
     private void showTime() {
@@ -129,32 +218,50 @@ public class LoginActivity extends AppCompatActivity {
         mTime.setText(dateString.toString());
     }
 
+
+    @OnClick(R.id.bio_login)
+    public void bioLoginOnClick() {
+        if(prefDB.getBoolean(App.CONST_USE_BIOMETRIC)){
+            displayBiometricLogin();
+        }
+    }
+
     @OnClick(R.id.login)
     public void loginOnClick() {
-
+        App.GuardID = mUserName.getText().toString();
+        App.GuardPSW = mPassword.getText().toString();
        // loginSuccessful();
 
-
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        App.GuardID = mUserName.getText().toString();
-        App.LastLogin = "Last Login : " + Util.convertDateToString(Calendar.getInstance().getTime(), "EEE, dd MMM yyyy, hh:mm a");
-
+        if (mUserName.getText().toString().length() == 0) {
+            mUserName.setError("User name can not be left blank.");
+            mUserName.setFocusable(true);
+            mUserName.requestFocus();
+        }
 
         if (mPassword.getText().toString().length() == 0) {
-            mPassword.setError("Password can not left blank.");
+            mPassword.setError("Password can not be left blank.");
             mPassword.setFocusable(true);
             mPassword.requestFocus();
-
         }
+
+     //   App.GuardID = mUserName.getText().toString();
+        performLogin(   App.GuardID ,  App.GuardPSW );
+
+        // callValidateUser();
+
+    }
+
+    public void performLogin(String uid, String psw){
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        App.LastLogin = "Last Login : " + Util.convertDateToString(Calendar.getInstance().getTime(), "EEE, dd MMM yyyy, hh:mm a");
 
         if (mRemember.isChecked()) {
             prefDB.putBoolean(App.CONST_REMEMBER_ME, true);
-           // prefDB.putString(App.GuardID, mUserName.getText().toString());
+            // prefDB.putString(App.GuardID, mUserName.getText().toString());
         }else {
             prefDB.putBoolean(App.CONST_REMEMBER_ME, false);
         }
-
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
@@ -167,18 +274,14 @@ public class LoginActivity extends AppCompatActivity {
                     App.FCNToken = task.getResult().getToken();
                     Log.e("NEW FCM Token: ", App.FCNToken);
 
-                    callValidateUser();
+                    callValidateUser(uid, psw);
                 });
-
-       // callValidateUser();
-
-
     }
 
-    public void callValidateUser() {
+    public void callValidateUser(String uid, String psw) {
         Call<ObjectRes> call = RestClient.METRO().getApiService().ValidateUser(
-                mUserName.getText().toString().trim(),
-                mPassword.getText().toString().trim(),
+                uid,
+                psw,
                 "N",
                 App.FCNToken,
                 Util.getSpecialKey(),
@@ -188,10 +291,10 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<ObjectRes>() {
             @Override
             public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
-                mProgressBar.setVisibility(View.GONE);
+
                 if (response.body().getResponsemessage().equalsIgnoreCase("Valid")) {
 
-                    App.GuardID = mUserName.getText().toString().trim();
+                    // App.GuardID = mUserName.getText().toString().trim();
                     App.AutToken = response.body().getToken();
                     App.LastLogin = response.body().getLastlogin();
 
@@ -211,15 +314,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSuccessful() {
-        mProgressBar.setVisibility(View.GONE);
-
-
-        // instantiate wiht new Token
-        //RestClient.Dismiss();
-
-        prefDB.putString(App.CONST_USER_NAME, App.GuardID);
-//        prefDB.putString(App.CONST_DEVICE_ID, App.deviceID);
-//        prefDB.putLong(App.CONST_TIMER_DELAY, App.timerDelay);
 
         // location
         //startLocationService();
@@ -364,7 +458,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void callGetUserProfile() {
         Call<ObjectRes> call = RestClient.METRO().getApiService().GetUserProfile(
-                App.GuardID,
+                App.GuardID ,
                 Util.getSpecialKey(),
                 Util.getMobileKey(mContext)
         );
@@ -387,5 +481,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

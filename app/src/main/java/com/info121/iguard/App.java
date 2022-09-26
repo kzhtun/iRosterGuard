@@ -37,6 +37,7 @@ public class App extends Application {
 
 
     public static String CONST_USER_NAME = "USER_NAME";
+    public static String CONST_PASSWORD = "PASSWORD";
     public static String CONST_ALREADY_LOGIN = "ALREADY_LOGIN";
     public static String CONST_NOTIFICATION_TONE = "NOTIFICATION_TONE";
     public static String CONST_PROMINENT_TONE = "PROMINENT_TONE";
@@ -44,10 +45,12 @@ public class App extends Application {
     public static String CONST_DEVICE_ID = "DEVICE_ID";
     public static String CONST_TIMER_DELAY = "TIMER_DELAY";
     public static String CONST_REMEMBER_ME = "REMEMBER_ME";
+    public static String CONST_USE_BIOMETRIC= "USE_BIOMETRIC";
 
 
     public static String LastLogin = "";
     public static String GuardID = "";
+    public static String GuardPSW= "";
     public static String GuardName = "";
     public static String DeviceID = "00000";
     public static String FCNToken = "FCN_0000";
