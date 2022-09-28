@@ -2,12 +2,21 @@ package com.info121.iguard.activities;
 
 import static com.info121.iguard.App.prefDB;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +25,12 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -36,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -44,15 +57,21 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.GET;
 
 import com.info121.iguard.api.RestClient;
 import com.info121.iguard.models.JobDetail;
 import com.info121.iguard.models.ObjectRes;
 import com.info121.iguard.models.SiteDetail;
+import com.info121.iguard.services.SmartLocationService;
 import com.info121.iguard.utils.DrawableUtils;
 import com.info121.iguard.utils.Util;
 
 public class MainActivity extends AbstractActivity {
+
+
+
+
 
     @BindView(R.id.timer)
     TextView mTimer;
@@ -119,12 +138,17 @@ public class MainActivity extends AbstractActivity {
     MenuItem mProfile, mNotification, mCalendar, mDeskboard, mLogout, mJobListBySite, mJobListByWeek;
     SwitchCompat mBiometricSwitch;
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-   //   startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+        //   startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
         ButterKnife.bind(this);
 
@@ -234,7 +258,6 @@ public class MainActivity extends AbstractActivity {
         else
             mBiometricSwitch.setChecked(false);
 
-
         mBiometricSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -325,10 +348,7 @@ public class MainActivity extends AbstractActivity {
 
         getGuardJobsByWeek();
 
-
-
-
-
+       // callSaveCheck();
     }
 
     private void getGuardJobsByWeek() {
@@ -479,4 +499,118 @@ public class MainActivity extends AbstractActivity {
             }
         });
     }
+
+
+    private void callSaveCheck(){
+       // yyyy-MM-dd hh:mm
+        String currentDateTime = Util.convertDateToString(Calendar.getInstance().getTime(), "yyyy-MM-dd hh:mm");
+
+        //@GET("savecheck/{guardcode},{guardname},{type},{sitecode},{checkdatetime},{location},{remarks},{secretkey},{mobilekey}")
+       Call<ObjectRes> call = RestClient.METRO().getApiService().SaveCheck(
+            App.GuardID,
+            App.GuardName,
+              "IN",
+              App.SiteCode,
+              currentDateTime,
+              "",
+              "",
+              Util.getSpecialKey(),
+              Util.getMobileKey(mContext)
+
+      );
+
+      call.enqueue(new Callback<ObjectRes>() {
+          @Override
+          public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
+
+              Log.e("Save Check : ", "Success");
+          }
+
+          @Override
+          public void onFailure(Call<ObjectRes> call, Throwable t) {
+              Log.e("Save Check : ", "Failed");
+          }
+      });
+
+    }
+
+
+    @OnClick(R.id.checkin)
+    public void checkInClick(){
+        startLocationService();
+    }
+
+    @OnClick(R.id.checkout)
+    public void checkOutClick(){
+        Log.e("Current Location", getCompleteAddressString(App.location));
+    }
+
+
+
+    // Location related
+    private void startLocationService() {
+        if (isGPSEnabled()) {
+            Intent serviceIntent = new Intent(MainActivity.this, SmartLocationService.class);
+            MainActivity.this.startService(serviceIntent);
+        }
+    }
+
+    private boolean isGPSEnabled() {
+
+        //mContext = LoginActivity.this;
+
+        final LocationManager manager = (LocationManager) getSystemService(mContext.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+
+            alertDialog.setTitle("GPS Settings");
+            alertDialog.setMessage("Your GPS/ Location service is off. \n Do you want to turn on location service?");
+
+            // On pressing Settings button
+            alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    mContext.startActivity(intent);
+                }
+            });
+
+            // on pressing cancel button
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            // Showing Alert Messages
+            alertDialog.show();
+
+            return false;
+        } else
+            return true;
+    }
+
+    private  String getCompleteAddressString(Location location) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null) {
+
+                strAdd = addresses.get(0).getFeatureName();
+                strAdd += ", " + addresses.get(0).getThoroughfare();
+                strAdd += ", " + addresses.get(0).getLocality();
+                strAdd += ", " + addresses.get(0).getCountryName();
+
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return strAdd;
+    }
+
+
+
 }

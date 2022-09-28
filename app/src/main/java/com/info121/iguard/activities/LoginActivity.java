@@ -1,17 +1,23 @@
 package com.info121.iguard.activities;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Handler;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -25,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -55,6 +62,11 @@ public class LoginActivity extends AppCompatActivity {
     BiometricPrompt.PromptInfo promptInfo;
 
 
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CAMERA,
+    };
 
     Tag myTag;
     NfcAdapter nfcAdapter;
@@ -69,8 +81,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.layout_login)
     LinearLayout mLoginLayout;
-
-
 
     @BindView(R.id.ver)
     TextView mUiVersion;
@@ -95,6 +105,17 @@ public class LoginActivity extends AppCompatActivity {
 
     Context mContext = LoginActivity.this;
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
 
     @Override
@@ -139,14 +160,12 @@ public class LoginActivity extends AppCompatActivity {
 //        mUserName.setText("M000764");
 //        mPassword.setText("metropolis");
 
-//        mUserName.setText("M000017");
-//        mPassword.setText("metropolis");
-
+        mUserName.setText("M000017");
+        mPassword.setText("metropolis");
 
         // Biometric
         checkBiometricHardware();
 
-        
         // biometric test on emulator
 //        App.GuardID =  prefDB.getString(App.CONST_USER_NAME);
 //        App.GuardPSW =  prefDB.getString(App.CONST_PASSWORD);
@@ -288,6 +307,8 @@ public class LoginActivity extends AppCompatActivity {
                 Util.getMobileKey(mContext)
         );
 
+        Log.e(TAG, call.request().toString());
+
         call.enqueue(new Callback<ObjectRes>() {
             @Override
             public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
@@ -297,6 +318,8 @@ public class LoginActivity extends AppCompatActivity {
                     // App.GuardID = mUserName.getText().toString().trim();
                     App.AutToken = response.body().getToken();
                     App.LastLogin = response.body().getLastlogin();
+
+                    Log.e(TAG, App.AutToken);
 
                     loginSuccessful();
 
@@ -315,9 +338,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginSuccessful() {
 
-        // location
-        //startLocationService();
-
         if (mRemember.isChecked())
             prefDB.putBoolean(App.CONST_REMEMBER_ME, true);
         else
@@ -326,6 +346,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.e(TAG, "Login Successful");
 
         callGetUserProfile();
+
+
 
     }
 
@@ -470,9 +492,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 App.currentUserProfile = response.body().getProfileDetails().get(0);
 
-                // login successful
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                 if (!hasPermissions(mContext, PERMISSIONS)) {
+                     ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS, PERMISSION_ALL);
+                 }   else {
+                     // login successful
+                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                     finish();
+                 }
             }
 
             @Override
@@ -482,5 +508,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+//     if (!hasPermissions(this, PERMISSIONS))
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//        else
+//    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(hasPermissions(this, PERMISSIONS))
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    }
 
 }

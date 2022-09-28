@@ -1,5 +1,6 @@
 package com.info121.iguard.services;
 
+import android.app.Application;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,10 +11,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.info121.nativelimo.App;
+import android.util.Log;
+import android.widget.Toast;
+
+
+import androidx.annotation.Nullable;
+
+import com.info121.iguard.App;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -70,6 +75,9 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
     @Override
     public void onLocationUpdated(Location location) {
         mLocation = location;
+        App.location = location;
+
+        Toast.makeText(getApplicationContext(), "Location Update : " + location.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private void startLocation() {
@@ -84,10 +92,10 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
                 .config(mParams)
                 .start(this);
 
-        updateToServer();
-        startTimer();
+     //   updateToServer();
+     //   startTimer();
         Log.e("Start Service ", "");
-
+        Toast.makeText(getApplicationContext(), "Location Service Start", Toast.LENGTH_SHORT).show();
         // update location first time
     }
 
@@ -95,8 +103,9 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
         SmartLocation.with(getApplicationContext()).location()
                 .stop();
 
-        stopTimer();
+     //   stopTimer();
         Log.e("Stop Service ", "");
+        Toast.makeText(getApplicationContext(), "Location Service Stop", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -110,10 +119,10 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
         App.mRunnable = new Runnable() {
             @Override
             public void run() {
-            //    Log.e("Timer ", "is Running");
-                if (App.userName.length() > 0)
-                    updateToServer();
-                App.mHandler.postDelayed(this, App.timerDelay);
+                //    Log.e("Timer ", "is Running");
+//                if (App.userName.length() > 0)
+//                    updateToServer();
+//                App.mHandler.postDelayed(this, App.timerDelay);
             }
         };
 
@@ -164,7 +173,11 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
         }
     }
 
-    private String getCompleteAddressString(Location location) {
+    public  String getCompleteAddressString() {
+        return getCompleteAddressString(App.location);
+    }
+
+    private  String getCompleteAddressString(Location location) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {

@@ -47,7 +47,6 @@ public class RestClient {
                             HttpUrl newUrl = originalHttpUrl.newBuilder()
                                     .build();
 
-
                             Request newRequest = original.newBuilder()
                                     .header("driver", App.GuardID)
                                     .header("token", App.AutToken)

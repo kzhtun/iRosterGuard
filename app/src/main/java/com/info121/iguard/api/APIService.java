@@ -28,6 +28,10 @@ public interface APIService {
     @GET("getGuardJobs/{sDate},{eDate},{guardId},{type},{secretkey},{mobileKey}")
     Call<ObjectRes> GetGuardJobs(@Path("sDate") String sDate, @Path("eDate") String eDate, @Path("guardId") String guardId,  @Path("type") String type, @Path("secretkey") String secretkey, @Path("mobileKey") String mobileKey);
 
+    //savecheck/{guardcode},{guardname},{type},{sitecode},{checkdatetime},{location},{remarks},{secretkey},{mobilekey}
+    @GET("savecheck/{guardcode},{guardname},{type},{sitecode},{checkdatetime},{location},{remarks},{secretkey},{mobilekey}")
+    Call<ObjectRes> SaveCheck(@Path("guardcode") String guardcode, @Path("guardname") String guardname, @Path("type") String type,  @Path("sitecode") String sitecode, @Path("checkdatetime") String checkdatetime, @Path("location") String location, @Path("remarks") String remarks, @Path("secretkey") String secretkey, @Path("mobileKey") String mobileKey);
+
 
    // confirmJob/{guardcode},{jobno},{secretkey},{mobilekey}
     // acknowledgeJob/{guardcode},{jobno},{secretkey},{mobilekey}

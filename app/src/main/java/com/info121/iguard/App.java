@@ -52,9 +52,10 @@ public class App extends Application {
     public static String GuardID = "";
     public static String GuardPSW= "";
     public static String GuardName = "";
+    public static String SiteCode = "";
     public static String DeviceID = "00000";
     public static String FCNToken = "FCN_0000";
-    public static String AutToken = "FCN_0000";
+    public static String AutToken = "00000000";
 
 
     public static long timerDelay = 60000;

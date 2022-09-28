@@ -87,4 +87,10 @@ dependencies {
 
     // Fingerprint Login
     implementation "androidx.biometric:biometric:1.1.0"
+
+    // Smart Location Library
+    implementation 'io.nlopez.smartlocation:library:3.3.3'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+
 }
