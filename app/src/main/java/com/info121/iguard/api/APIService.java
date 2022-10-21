@@ -33,7 +33,7 @@ public interface APIService {
     Call<ObjectRes> SaveCheck(@Path("guardcode") String guardcode, @Path("guardname") String guardname, @Path("type") String type,  @Path("sitecode") String sitecode, @Path("checkdatetime") String checkdatetime, @Path("location") String location, @Path("remarks") String remarks, @Path("secretkey") String secretkey, @Path("mobileKey") String mobileKey);
 
 
-   // confirmJob/{guardcode},{jobno},{secretkey},{mobilekey}
+    // confirmJob/{guardcode},{jobno},{secretkey},{mobilekey}
     // acknowledgeJob/{guardcode},{jobno},{secretkey},{mobilekey}
 
     @GET("confirmJob/{guardId},{jobno},{secretkey},{mobileKey}")

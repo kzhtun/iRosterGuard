@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -187,60 +188,60 @@ public class MainActivity extends AbstractActivity {
             }
         });
 
-//        List<EventDay> events = new ArrayList<>();
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(Util.convertDateStringToDate("25/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar1 = Calendar.getInstance();
-//        calendar1.setTime(Util.convertDateStringToDate("26/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar1, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar2 = Calendar.getInstance();
-//        calendar2.setTime(Util.convertDateStringToDate("27/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar2, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar3 = Calendar.getInstance();
-//        calendar3.setTime(Util.convertDateStringToDate("28/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar3, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar4 = Calendar.getInstance();
-//        calendar4.setTime(Util.convertDateStringToDate("29/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar4, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar5 = Calendar.getInstance();
-//        calendar5.setTime(Util.convertDateStringToDate("30/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar5, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        Calendar calendar6 = Calendar.getInstance();
-//        calendar6.setTime(Util.convertDateStringToDate("31/05/2020", "dd/MM/yyyy"));
-//        events.add(new EventDay(calendar6, DrawableUtils.getCircleDrawableWithText(this, "SO")));
-//
-//        mCalendarView.setEvents(events);
-//
-//        String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE dd MMM yyyy");
-//
-//        //mJobDate.setText(Util.convertDateToString(Calendar.getInstance().getTime(), "dd-MMM-yyyy, EEE"));
-//        mSubTitle.setText(dateString);
-//
-//
-//        mCalendarView.setOnDayClickListener(eventDay -> {
-//            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
-//            Calendar calendar7 = eventDay.getCalendar();
-//
-//            Date selectedDate = new Date(calendar7.getTimeInMillis());
-//            String selectedDateString = sdf.format(selectedDate);
-//
-//        //    getStartDateOfWeek(selectedDate);
-//
-//            Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
-//            intent.putExtra("sDate", Util.getStartDateOfWeek(selectedDate));
-//            intent.putExtra("eDate", Util.getEndDateOfWeek(selectedDate));
-//            startActivity(intent);
-//
-//
-//
-//        });
+        List<EventDay> events = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Util.convertDateStringToDate("19/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(Util.convertDateStringToDate("20/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar1, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(Util.convertDateStringToDate("21/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar2, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.setTime(Util.convertDateStringToDate("22/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar3, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar4 = Calendar.getInstance();
+        calendar4.setTime(Util.convertDateStringToDate("23/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar4, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar5 = Calendar.getInstance();
+        calendar5.setTime(Util.convertDateStringToDate("24/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar5, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        Calendar calendar6 = Calendar.getInstance();
+        calendar6.setTime(Util.convertDateStringToDate("25/10/2022", "dd/MM/yyyy"));
+        events.add(new EventDay(calendar6, DrawableUtils.getCircleDrawableWithText(this, "SO")));
+
+        mCalendarView.setEvents(events);
+
+        String dateString = Util.convertDateToString(Calendar.getInstance().getTime(), "EEE dd MMM yyyy");
+
+        //mJobDate.setText(Util.convertDateToString(Calendar.getInstance().getTime(), "dd-MMM-yyyy, EEE"));
+        mSubTitle.setText(dateString);
+
+
+        mCalendarView.setOnDayClickListener(eventDay -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, E");
+            Calendar calendar7 = eventDay.getCalendar();
+
+            Date selectedDate = new Date(calendar7.getTimeInMillis());
+            String selectedDateString = sdf.format(selectedDate);
+
+        //    getStartDateOfWeek(selectedDate);
+
+            Intent intent = new Intent(MainActivity.this, JobListBySiteActivity.class);
+            intent.putExtra("sDate", Util.getStartDateOfWeek(selectedDate));
+            intent.putExtra("eDate", Util.getEndDateOfWeek(selectedDate));
+            startActivity(intent);
+
+
+
+        });
 
         mNavigationView.setItemIconTintList(null);
 
@@ -346,7 +347,11 @@ public class MainActivity extends AbstractActivity {
             }
         });
 
+        startLocationService();
+
         getGuardJobsByWeek();
+
+
 
        // callSaveCheck();
     }
@@ -501,48 +506,26 @@ public class MainActivity extends AbstractActivity {
     }
 
 
-    private void callSaveCheck(){
-       // yyyy-MM-dd hh:mm
-        String currentDateTime = Util.convertDateToString(Calendar.getInstance().getTime(), "yyyy-MM-dd hh:mm");
 
-        //@GET("savecheck/{guardcode},{guardname},{type},{sitecode},{checkdatetime},{location},{remarks},{secretkey},{mobilekey}")
-       Call<ObjectRes> call = RestClient.METRO().getApiService().SaveCheck(
-            App.GuardID,
-            App.GuardName,
-              "IN",
-              App.SiteCode,
-              currentDateTime,
-              "",
-              "",
-              Util.getSpecialKey(),
-              Util.getMobileKey(mContext)
-
-      );
-
-      call.enqueue(new Callback<ObjectRes>() {
-          @Override
-          public void onResponse(Call<ObjectRes> call, Response<ObjectRes> response) {
-
-              Log.e("Save Check : ", "Success");
-          }
-
-          @Override
-          public void onFailure(Call<ObjectRes> call, Throwable t) {
-              Log.e("Save Check : ", "Failed");
-          }
-      });
-
-    }
 
 
     @OnClick(R.id.checkin)
     public void checkInClick(){
-        startLocationService();
+        Log.e("Check in Location", getCompleteAddressString(App.location));
+       // Toast.makeText(mContext, "Check In : " + getCompleteAddressString(App.location), Toast.LENGTH_LONG).show();
+        App.SiteAddress = getCompleteAddressString(App.location);
+        App.LogType = "Check-In";
+        startActivity(new Intent(MainActivity.this, ScannerActivity.class));
     }
 
     @OnClick(R.id.checkout)
     public void checkOutClick(){
-        Log.e("Current Location", getCompleteAddressString(App.location));
+        Log.e("Check out Location", getCompleteAddressString(App.location));
+       // Toast.makeText(mContext, "Check Out : " + getCompleteAddressString(App.location), Toast.LENGTH_LONG).show();
+        App.SiteAddress = getCompleteAddressString(App.location);
+        App.LogType = "Check-Out";
+        startActivity(new Intent(MainActivity.this, ScannerActivity.class));
+
     }
 
 
@@ -610,6 +593,8 @@ public class MainActivity extends AbstractActivity {
         }
         return strAdd;
     }
+
+
 
 
 

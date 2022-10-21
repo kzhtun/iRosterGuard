@@ -1,5 +1,7 @@
 package com.info121.iguard.activities;
 
+import static com.info121.iguard.App.prefDB;
+
 import android.Manifest;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -160,7 +162,9 @@ public class LoginActivity extends AppCompatActivity {
 //        mUserName.setText("M000764");
 //        mPassword.setText("metropolis");
 
-        mUserName.setText("M000017");
+      //  mUserName.setText("M000017");
+        mUserName.setText("M000304");
+
         mPassword.setText("metropolis");
 
         // Biometric
@@ -203,6 +207,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
+
+
             }
 
             @Override
@@ -264,7 +270,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
      //   App.GuardID = mUserName.getText().toString();
-        performLogin(   App.GuardID ,  App.GuardPSW );
+        performLogin( App.GuardID ,  App.GuardPSW );
 
         // callValidateUser();
 
@@ -344,6 +350,12 @@ public class LoginActivity extends AppCompatActivity {
             prefDB.putBoolean(App.CONST_REMEMBER_ME, false);
 
         Log.e(TAG, "Login Successful");
+
+        if( prefDB.getString(App.CONST_USER_NAME) !=  App.GuardID){
+            prefDB.putBoolean(App.CONST_USE_BIOMETRIC, false);
+        //    prefDB.putString(App.CONST_USER_NAME,  App.GuardID);
+       //     prefDB.putString(App.CONST_PASSWORD, App.GuardPSW);
+        }
 
         callGetUserProfile();
 

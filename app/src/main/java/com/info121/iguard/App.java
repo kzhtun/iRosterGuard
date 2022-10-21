@@ -47,7 +47,9 @@ public class App extends Application {
     public static String CONST_REMEMBER_ME = "REMEMBER_ME";
     public static String CONST_USE_BIOMETRIC= "USE_BIOMETRIC";
 
-
+    public static String LogType = "";
+    public static String SiteAddress = "";
+    public static String SiteInfo = "";
     public static String LastLogin = "";
     public static String GuardID = "";
     public static String GuardPSW= "";
@@ -56,6 +58,7 @@ public class App extends Application {
     public static String DeviceID = "00000";
     public static String FCNToken = "FCN_0000";
     public static String AutToken = "00000000";
+
 
 
     public static long timerDelay = 60000;

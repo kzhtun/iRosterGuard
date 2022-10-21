@@ -77,7 +77,7 @@ public class SmartLocationService extends Service implements OnLocationUpdatedLi
         mLocation = location;
         App.location = location;
 
-        Toast.makeText(getApplicationContext(), "Location Update : " + location.toString(), Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "Location Update : " + location.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private void startLocation() {
